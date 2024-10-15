@@ -2,16 +2,16 @@ services:
 
   traefik:
     image: "traefik:v2.5"
-    container_name: "traefik"
+    container_name: "traefik2"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"
-      - "8080:8080"
-      - "444:443"  # Puerto HTTPS
+      - "70:80"
+      - "8070:8080"
+      - "470:443"  # Puerto HTTPS
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     #      - "./traefik/traefik.toml:/traefik.toml"
@@ -30,13 +30,14 @@ services:
     volumes:
       - ./data/db-servicio-satelital:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5434:5432"
     networks:
-      - red-backend-app
+      - red-backend-app-satelital
 
 
   servicio-satelital:
-    image: 'pleyer888/servicio-satelital:latest'
+    image: 'pleyer888/servicio-satelital:1.0.0'
+
     ports:
       - '8070:8092'
     environment:
@@ -59,8 +60,8 @@ services:
     depends_on:
       - db-servicio-satelital
     networks:
-      - red-backend-app
+      - red-backend-app-satelital
 
 networks:
-  red-backend-app:
+  red-backend-app-satelital:
     driver: bridge
