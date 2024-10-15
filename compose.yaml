@@ -1,0 +1,66 @@
+services:
+
+  traefik:
+    image: "traefik:v2.5"
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "444:443"  # Puerto HTTPS
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    #      - "./traefik/traefik.toml:/traefik.toml"
+    #      - "./traefik/acme.json:/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.api.entrypoints=web"
+
+  db-servicio-satelital:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_DB: servicio-satelital
+      POSTGRES_USER: executer
+      POSTGRES_PASSWORD: di-mi-nombre
+    volumes:
+      - ./data/db-servicio-satelital:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - red-backend-app
+
+
+  servicio-satelital:
+    image: 'pleyer888/servicio-satelital:latest'
+    ports:
+      - '8070:8092'
+    environment:
+      DB_URL: jdbc:postgresql://db-servicio-satelital/servicio-satelital
+      DB_USERNAME: executer
+      DB_PASSWORD: di-mi-nombre
+      JPA_DDL: update
+      SERVER_PORT: 8092
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.posts.rule=(Host(`localhost`) || Host(`54.174.7.54`) || Host(`http://54.174.7.54/`)) && (PathPrefix(`/post/{id:[0-9]+}`)||\
+                                                               PathPrefix(`/api/servicio-satelital/allData`)||\
+                                                               PathPrefix(`/api/servicio-satelital/saveData`)||\
+                                                               PathPrefix(`/api/servicio-satelital/deleteData/{id:[0-9]+}`)||\
+                                                               PathPrefix(`/api/servicio-satelital/updateData`)||\
+                                                               PathPrefix(`/api/servicio-satelital/searchDataById/{id:[0-9]+}`)
+                                                               )"
+      - "traefik.http.routers.usuarios.entrypoints=web"
+
+    depends_on:
+      - db-servicio-satelital
+    networks:
+      - red-backend-app
+
+networks:
+  red-backend-app:
+    driver: bridge
