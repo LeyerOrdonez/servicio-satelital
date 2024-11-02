@@ -19,6 +19,7 @@ public class Dato {
     private String area;
     private String date_proccess;
     private String path_row_src;
+    private String colored_image;
 
 }
 

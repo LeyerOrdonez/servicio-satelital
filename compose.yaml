@@ -9,9 +9,9 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
-      - "70:80"
-      - "8070:8080"
-      - "470:443"  # Puerto HTTPS
+      - "71:80"
+      - "8071:8080"
+      - "471:443"  # Puerto HTTPS
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     #      - "./traefik/traefik.toml:/traefik.toml"
@@ -48,12 +48,14 @@ services:
       SERVER_PORT: 8092
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.posts.rule=(Host(`localhost`) || Host(`54.174.7.54`) || Host(`http://54.174.7.54/`)) && (PathPrefix(`/post/{id:[0-9]+}`)||\
-                                                               PathPrefix(`/api/servicio-satelital/allData`)||\
-                                                               PathPrefix(`/api/servicio-satelital/saveData`)||\
-                                                               PathPrefix(`/api/servicio-satelital/deleteData/{id:[0-9]+}`)||\
-                                                               PathPrefix(`/api/servicio-satelital/updateData`)||\
-                                                               PathPrefix(`/api/servicio-satelital/searchDataById/{id:[0-9]+}`)
+      - "traefik.http.routers.posts.rule=(Host(`localhost`) || Host(`54.174.7.54`) || Host(`http://54.174.7.54/`)) && 
+                                                               (PathPrefix(`/post/{id:[0-9]+}`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/allData`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/saveData`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/deleteData/{id:[0-9]+}`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/updateData`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/searchDataById/{id:[0-9]+}`) ||\
+                                                               PathPrefix(`/api/servicio-satelital/searchDataByName/{name:[a-zA-Z ]+}`)
                                                                )"
       - "traefik.http.routers.usuarios.entrypoints=web"
 
