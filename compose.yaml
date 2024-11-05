@@ -2,7 +2,7 @@ services:
 
   traefik:
     image: "traefik:v2.5"
-    container_name: "traefik2"
+    container_name: "traefikTG"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -36,7 +36,7 @@ services:
 
 
   servicio-satelital:
-    image: 'pleyer888/servicio-satelital:1.0.0'
+    image: 'pleyer888/servicio-satelital:1.1.0'
 
     ports:
       - '8070:8092'
@@ -46,6 +46,8 @@ services:
       DB_PASSWORD: di-mi-nombre
       JPA_DDL: update
       SERVER_PORT: 8092
+    volumes:
+      - ./src/main/resources/imagenes-satelital-procesadas-firebase-adminsdk-ym4ri-3cbc49f8a9.json:/src/main/resources/imagenes-satelital-procesadas-firebase-adminsdk-ym4ri-3cbc49f8a9.json
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.posts.rule=(Host(`localhost`) || Host(`54.174.7.54`) || Host(`http://54.174.7.54/`)) && 

@@ -67,6 +67,7 @@ public class DatoRestController {
             @RequestParam("area") String area,
             @RequestParam("date_proccess") String date_proccess,
             @RequestParam("path_row_src") String path_row_src
+            //TODO hay que hacer que la imaen coloreada se guarde modificar aqui, en dato , en postman, cambiar rama
     ) {
         try {
             Dato dato = new Dato();

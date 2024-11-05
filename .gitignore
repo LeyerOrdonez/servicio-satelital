@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+##secret##
+src/main/resources/imagenes-satelital-procesadas-firebase-adminsdk-ym4ri-3cbc49f8a9.json
