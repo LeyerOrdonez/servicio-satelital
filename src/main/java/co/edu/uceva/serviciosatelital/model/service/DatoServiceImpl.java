@@ -46,9 +46,10 @@ public class DatoServiceImpl implements IDatoService{
         }
     }
 
-    public Dato saveDato(Dato dato, MultipartFile file1, MultipartFile file2) throws IOException {
+    public Dato saveDato(Dato dato, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
         String contentType1 = file1.getContentType();
         String contentType2 = file2.getContentType();
+        String contentType3 = file3.getContentType();
 
         // Subir la imagen 1 a Firebase
         BlobInfo blobInfo1 = BlobInfo.newBuilder(bucketName, file1.getOriginalFilename())
@@ -65,6 +66,13 @@ public class DatoServiceImpl implements IDatoService{
         storage.create(blobInfo2, file2.getInputStream());
         String imageUrl2 = "https://firebasestorage.googleapis.com/v0/b/" + bucketName + "/o/" + file2.getOriginalFilename() + "?alt=media";
         dato.setNdwi_link(imageUrl2);
+
+        BlobInfo blobInfo3 = BlobInfo.newBuilder(bucketName, file3.getOriginalFilename())
+                .setContentType(contentType3)
+                .build();
+        storage.create(blobInfo3, file3.getInputStream());
+        String imageUrl3 = "https://firebasestorage.googleapis.com/v0/b/" + bucketName + "/o/" + file2.getOriginalFilename() + "?alt=media";
+        dato.setColored_image(imageUrl3);
 
         return datoDao.save(dato);
     }

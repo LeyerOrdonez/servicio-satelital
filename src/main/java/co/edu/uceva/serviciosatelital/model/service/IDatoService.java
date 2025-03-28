@@ -16,7 +16,7 @@ public interface IDatoService {
 
     Dato findById(Long id);
 
-    Dato saveDato(Dato dato, MultipartFile file1, MultipartFile file2) throws IOException;
+    Dato saveDato(Dato dato, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException;
 
     List<Dato> findByName(String nombre);
 

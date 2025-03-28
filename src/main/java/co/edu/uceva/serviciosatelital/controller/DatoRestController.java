@@ -23,7 +23,7 @@ public class DatoRestController {
     }
 
 
-    //funcion guardado, guarga las imagenes en firebase store
+    //funcion guardado, guarda las imagenes en firebase store
     @PostMapping("/saveData")
     public ResponseEntity<Dato> saveDato(
             @RequestParam("ndwi_img") MultipartFile file1,
@@ -32,7 +32,8 @@ public class DatoRestController {
             @RequestParam("description") String description,
             @RequestParam("area") String area,
             @RequestParam("date_proccess") String date_proccess,
-            @RequestParam("path_row_src") String path_row_src
+            @RequestParam("path_row_src") String path_row_src,
+            @RequestParam("colored_img") MultipartFile file3
     ) {
 
         try {
@@ -43,7 +44,7 @@ public class DatoRestController {
             dato.setDate_proccess(date_proccess);
             dato.setPath_row_src(path_row_src);
             // Añadir más campos según sea necesario
-            Dato savedDato = datoService.saveDato(dato, file1, file2);
+            Dato savedDato = datoService.saveDato(dato, file1, file2, file3);
             return new ResponseEntity<>(savedDato, HttpStatus.CREATED);
         } catch (IOException e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,8 +67,9 @@ public class DatoRestController {
             @RequestParam("description") String description,
             @RequestParam("area") String area,
             @RequestParam("date_proccess") String date_proccess,
-            @RequestParam("path_row_src") String path_row_src
-            //TODO hay que hacer que la imaen coloreada se guarde modificar aqui, en dato , en postman, cambiar rama
+            @RequestParam("path_row_src") String path_row_src,
+            @RequestParam("colored_img") MultipartFile file3
+
     ) {
         try {
             Dato dato = new Dato();
@@ -77,7 +79,7 @@ public class DatoRestController {
             dato.setDate_proccess(date_proccess);
             dato.setPath_row_src(path_row_src);
             // Añadir más campos según sea necesario
-            Dato savedDato = datoService.saveDato(dato, file1, file2);
+            Dato savedDato = datoService.saveDato(dato, file1, file2, file3);
             return new ResponseEntity<>(savedDato, HttpStatus.CREATED);
         } catch (IOException e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
